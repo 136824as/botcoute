@@ -11,6 +11,7 @@ import time
 client = discord.Client()
 token = '★봇 토큰★'
 gaming = '★상태에 표시될  게 임 이 름★'
+channel = ☆인증채널 ID'
 
 @client.event
 async def on_ready():
@@ -21,6 +22,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.content.startswith("/인증"):    #명령어 /인증
+        if not message.channel.id == int(channel):
+            return
         a = ""
         Captcha_img = ImageCaptcha()
         for i in range(6):

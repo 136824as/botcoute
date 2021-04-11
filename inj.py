@@ -2,16 +2,18 @@
 # 필수설치 모듈
 #pip install discord
 #pip install captcha
+#pip install asyncio
 
 import discord
 from captcha.image import ImageCaptcha
 import random
 import time
+import asyncio
 
 client = discord.Client()
 token = '★봇 토큰★'
 gaming = '★상태에 표시될  게 임 이 름★'
-channel = ☆인증채널 ID'
+channel = '☆인증채널 ID'
 
 @client.event
 async def on_ready():
@@ -21,7 +23,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content.startswith("/인증"):    #명령어 /인증
+    if message.content.startswith("!인증"):    #명령어 !인증
         if not message.channel.id == int(channel):
             return
         a = ""
@@ -54,10 +56,10 @@ async def on_message(message):
             await message.channel.purge(limit=4)
             tjdrhdEmbed = discord.Embed(title='인증성공', color=0x04FF00)
             tjdrhdEmbed.add_field(name='닉네임', value=message.author, inline=False)
-            tjdrhdEmbed.add_field(name='5초후 인증역할이 부여됩니다.', value='** **', inline=False)
+            tjdrhdEmbed.add_field(name='3초후 인증역할이 부여됩니다.', value='** **', inline=False)
             tjdrhdEmbed.set_thumbnail(url=message.author.avatar_url)
             await message.channel.send(embed=tjdrhdEmbed)
-            time.sleep(5)
+            await asyncio.sleep(3)
             await message.author.add_roles(role)
         else:
             await message.channel.purge(limit=4)

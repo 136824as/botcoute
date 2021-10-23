@@ -13,7 +13,7 @@ import asyncio
 client = discord.Client()
 token = '★봇 토큰★'
 gaming = '★상태에 표시될  게 임 이 름★'
-channel = '☆인증채널 ID'
+_channel = '☆인증채널 ID'
 
 @client.event
 async def on_ready():
@@ -24,7 +24,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.content.startswith("!인증"):    #명령어 !인증
-        if not message.channel.id == int(channel):
+        if not message.channel.id == _channel:
             return
         a = ""
         Captcha_img = ImageCaptcha()
@@ -34,16 +34,16 @@ async def on_message(message):
         name = str(message.author. id) + ".png"
         Captcha_img.write(a, name)
 
-        await message.channel.send(f"""{message.author.mention} 아래 숫자를 10초 내에 입력해주세요. """)
-        await message.channel.send(file=discord.File(name))
+        nummsg = await message.channel.send(f"{message.author.mention} 아래 숫자를 10초 내에 입력해주세요.", file=discord.File(name))
 
         def check(msg):
             return msg.author == message.author and msg.channel == message.channel
 
         try:
-            msg = await client.wait_for("message", timeout=10, check=check) # 제한시간 10초
+            msg = await client.wait_for("message", timeout=10, check=check) # 제한시간 
         except:
-            await message.channel.purge(limit=3)
+            await nummsg.delete()
+            await message.delete()
             chrhkEmbed = discord.Embed(title='❌ 인증실패', color=0xFF0000)
             chrhkEmbed.add_field(name='닉네임', value=message.author, inline=False)
             chrhkEmbed.add_field(name='이유', value='시간초과', inline=False)
@@ -53,7 +53,10 @@ async def on_message(message):
 
         if msg.content == a:
             role = discord.utils.get(message.guild.roles, name="★역  할  이  름★")
-            await message.channel.purge(limit=4)
+
+            await nummsg.delete()
+            await message.delete()
+            await msg.delete()
             tjdrhdEmbed = discord.Embed(title='인증성공', color=0x04FF00)
             tjdrhdEmbed.add_field(name='닉네임', value=message.author, inline=False)
             tjdrhdEmbed.add_field(name='3초후 인증역할이 부여됩니다.', value='** **', inline=False)
@@ -62,7 +65,9 @@ async def on_message(message):
             await asyncio.sleep(3)
             await message.author.add_roles(role)
         else:
-            await message.channel.purge(limit=4)
+            await nummsg.delete()
+            await message.delete()
+            await msg.delete()
             tlfvoEmbed = discord.Embed(title='❌ 인증실패', color=0xFF0000)
             tlfvoEmbed.add_field(name='닉네임', value=message.author, inline=False)
             tlfvoEmbed.add_field(name='이유', value='잘못된 숫자', inline=False)

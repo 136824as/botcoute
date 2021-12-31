@@ -1,9 +1,3 @@
-
-# 필수설치 모듈
-#pip install discord
-#pip install captcha
-#pip install asyncio
-
 import discord
 from captcha.image import ImageCaptcha
 import random
@@ -12,14 +6,11 @@ import asyncio
 
 client = discord.Client()
 token = '★봇 토큰★'
-gaming = '★상태에 표시될  게 임 이 름★'
 _channel = '☆인증채널 ID☆'
 
 @client.event
 async def on_ready():
-    print("인증 봇이 정상적으로 실행되었습니다.")
-    game = discord.Game(gaming)
-    await client.change_presence(status=discord.Status.online, activity=game)
+    print(client.user)
 
 @client.event
 async def on_message(message):
